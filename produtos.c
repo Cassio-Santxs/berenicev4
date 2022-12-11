@@ -326,12 +326,107 @@ void menuDeProdutos( cadastro_produtos **ptrProdutos,
 
                 system("cls");
 
+                cadastro_produtos *auxExcluir = (cadastro_produtos*) calloc(1,sizeof(cadastro_produtos));
+                auxExcluir = *ptrProdutos;
+
                 if(*contadorProdutos > 0)
                 {
-                    exibirProdutos(*ptrProdutos);
+                    printf("\n\n=====\t\t||\t\t PRODUTOS \t\t||\t\t=====\n\n");
+                    printf("\n\t ID      \t Produto \t Preço        \t Estoque \t\n");
 
-                    if(excluirProduto(*ptrProdutos,
-                                      *tamanhoVetorProdts) == 1)
+                    while(auxExcluir != NULL)
+                    {
+
+                        if(auxExcluir->id > 0)
+                        {
+                            printf("\n\t %ld   \t\t   %s     \t R$ %.2f      \t %i      \t",
+                                   auxExcluir->id,
+                                   auxExcluir->nome,
+                                   auxExcluir->preco,
+                                   auxExcluir->estoque);
+                        }
+
+                        auxExcluir = auxExcluir->next;
+                    }
+
+                    auxExcluir = auxHead;
+
+                    idDigitado = 0;
+
+                    int confirma,
+                        flagConfirma = 1,
+                        retorno = 0;
+
+                    printf("\n\n=====\t\t||\t\t EXCLUIR PRODUTOS \t\t||\t\t=====\n\n");
+
+                    retorno = 0;
+                    do
+                    {
+                        printf("\nDigite o ID do produto que você quer excluir: ");
+                        scanf("%li", &idDigitado);
+                        getchar();
+
+
+                        while(*ptrProdutos != NULL)
+                        {
+                            if((*ptrProdutos)->id == idDigitado)
+                            {
+                                break;
+                            }
+                            *ptrProdutos = (*ptrProdutos)->next;
+                        }
+
+                        if(*ptrProdutos != NULL)
+                        {
+                            retorno = 1;
+                        }
+                        else
+                        {
+                            printf("\nProduto não encontrado");
+                            retorno = 0;
+                            *ptrProdutos = auxHead;
+                        }
+                    }
+                    while(retorno == 0);
+
+                    printf("\n\n=====\t\t||\t\t CONFIRMAR EXCLUSÃO \t\t||\t\t=====\n\n");
+                    printf("\n\t %ld     \t %s      \t R$ %.2f   \t %d         \t", (*ptrProdutos)->id, (*ptrProdutos)->nome, (*ptrProdutos)->preco, (*ptrProdutos)->estoque);
+
+                    while(flagConfirma == 1)
+                    {
+                        printf("\n\nAperte 1 para confirmar e 2 para cancelar: ");
+                        scanf("%i", &confirma);
+                        getchar();
+
+                        switch(confirma)
+                        {
+                        case 1:
+                            flagConfirma = 0;
+
+                            (*ptrProdutos)->id = 0;
+                            printf("\nProduto excluido com sucesso.");
+                            retorno = 1;
+
+                            break;
+
+                        case 2:
+                            flagConfirma = 0;
+
+                            printf("\nAção cancelada.");
+                            retorno = 0;
+
+                            break;
+
+                        default:
+                            flagConfirma = 1;
+
+                            printf("\nCódigo inválido!");
+
+                            break;
+                        }
+                    }
+
+                    if(retorno == 1)
                     {
                         *contadorProdutos = *contadorProdutos - 1;
                     }
