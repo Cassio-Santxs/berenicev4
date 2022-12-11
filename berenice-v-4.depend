@@ -1,0 +1,24 @@
+# depslib dependency file v1.0
+1670707512 source:c:\faculdade cassio\berenice-v-4\main.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	"headers.h"
+
+1670708217 source:c:\faculdade cassio\berenice-v-4\vendas.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<string.h>
+	<time.h>
+	"headers.h"
+
+1670709469 c:\faculdade cassio\berenice-v-4\headers.h
+
+1670785966 source:c:\faculdade cassio\berenice-v-4\produtos.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<locale.h>
+	"headers.h"
+
