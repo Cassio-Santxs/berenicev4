@@ -13,10 +13,14 @@ void menuDeProdutos( cadastro_produtos **ptrProdutos,
     int i = 0;
     char voltar = 'q';
 
+    cadastro_produtos *auxHead = (cadastro_produtos*) calloc(1,sizeof(cadastro_produtos));
+
     while(flag == 1)
     {
         while(codigo != 7)
         {
+            auxHead = *ptrProdutos;
+
             system("cls");
 
             printf("\n\n=====\t\t||\t\t MENU DE PRODUTOS \t\t||\t\t=====\n\n");
@@ -70,6 +74,8 @@ void menuDeProdutos( cadastro_produtos **ptrProdutos,
                 {
                     printf("\n\aAVISO: Você não possui produtos cadastrados.\n");
                 }
+
+                 *ptrProdutos = auxHead;
 
                 break;
 
@@ -193,15 +199,13 @@ void menuDeProdutos( cadastro_produtos **ptrProdutos,
 
             case 3:
                 flag = 0;
+                long int idDigitado = 0;
 
                 system("cls");
 
+                // EXIBIR PRODUTOS
                 if(*contadorProdutos > 0)
                 {
-                    char voltar;
-
-                    printf("%ld", (*ptrProdutos)->id);
-
                     printf("\n\n=====\t\t||\t\t PRODUTOS \t\t||\t\t=====\n\n");
                     printf("\n\t ID      \t Produto \t Preço        \t Estoque \t\n");
 
@@ -216,11 +220,92 @@ void menuDeProdutos( cadastro_produtos **ptrProdutos,
                                    (*ptrProdutos)->preco,
                                    (*ptrProdutos)->estoque);
                         }
-
+                        printf("%ld", (*ptrProdutos)->id);
                         *ptrProdutos = (*ptrProdutos)->next;
+                        printf("%ld", (*ptrProdutos)->id);
                     }
 
-                    atualizarProduto(*ptrProdutos, *tamanhoVetorProdts);
+                    *ptrProdutos = auxHead;
+                    printf("%ld", (*ptrProdutos)->id);
+                    //
+
+                    // ATUALIZAR PRODUTOS
+                    printf("\n\n=====\t\t||\t\t ATUALIZAÇÃO DE PRODUTOS \t\t||\t\t=====\n\n");
+
+                    cadastro_produtos *aux = (cadastro_produtos*) calloc(1, sizeof(cadastro_produtos));
+
+                    retorno = 0;
+                    while (retorno == 0)
+                    {
+                        printf("\nDigite o ID do produto que você que alterar: ");
+                        scanf("%li", &idDigitado);
+                        getchar();
+
+
+                        while(*ptrProdutos != NULL)
+                        {
+                            if((*ptrProdutos)->id == idDigitado)
+                            {
+                                break;
+                            }
+                            printf("%ld", (*ptrProdutos)->id);
+                            *ptrProdutos = (*ptrProdutos)->next;
+                        }
+
+                        if(*ptrProdutos != NULL)
+                        {
+                            retorno = 1;
+                            aux = *ptrProdutos;
+                        }
+                        else
+                        {
+                            printf("\nProduto não encontrado");
+                            retorno = 0;
+                            *ptrProdutos = auxHead;
+                        }
+
+                    }
+
+                    do
+                    {
+                        printf("\nDigite o novo estoque do produto de ID %li sendo este valor maior ou igual a 0: ", (*ptrProdutos)->id);
+                        scanf("%i", estoque);
+                        getchar();
+
+                        if(estoque < 0)
+                        {
+                            printf("Quantidade inválida!");
+                        }
+                    }
+                    while(estoque < 0);
+
+                    do
+                    {
+                        printf("\nDigite o novo preço do produto de ID %li sendo este valor maior ou igual a 0: ", (*ptrProdutos)->id);
+                        scanf("%f", preco);
+                        getchar();
+
+                        if(preco < 0)
+                        {
+                            printf("Quantidade inválida!");
+                        }
+                    }
+                    while(preco < 0);
+
+                    (*ptrProdutos)->preco = preco;
+                    (*ptrProdutos)->estoque = estoque;
+
+
+                    system("cls");
+
+                    printf("\n\n=====\t\t||\t\t         ANTIGO          \t\t||\t\t=====\n\n");
+
+                    printf("\n\t ID     \t Produto \t Preço     \t Quantidade \t\n");
+                    printf("\n\t %d     \t %s      \t R$ %.2f   \t %d         \t", (*ptrProdutos)->id, (*ptrProdutos)->nome, aux->preco, aux->estoque);
+
+                    printf("\n\n=====\t\t||\t\t          NOVO           \t\t||\t\t=====\n\n");
+                    printf("\n\t %d     \t %s      \t R$ %.2f   \t %d         \t", (*ptrProdutos)->id, (*ptrProdutos)->nome, (*ptrProdutos)->preco, (*ptrProdutos)->estoque);
+
                 }
                 else
                 {
