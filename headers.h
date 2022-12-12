@@ -50,7 +50,7 @@ int procuraProduto(cadastro_produtos *ptrProdutos, long int idDigitado);
 
 // Funções de venda
 
-void menuDeVendas(cadastro_produtos *ptrProdutos,
+void menuDeVendas(cadastro_produtos **ptrProdutos,
                   int tamanhoVetorProdts);
 
 void compras(cadastro_produtos *ptrProdutos,

@@ -6,7 +6,7 @@
 
 #include "headers.h"
 
-void menuDeVendas(cadastro_produtos *ptrProdutos,
+void menuDeVendas(cadastro_produtos **ptrProdutos,
                   int tamanhoVetorProdts)
 {
 
@@ -17,10 +17,13 @@ void menuDeVendas(cadastro_produtos *ptrProdutos,
         i,
         quantidade = 0;
 
+    cadastro_produtos *auxHead = (cadastro_produtos*) calloc(1,sizeof(cadastro_produtos));
+
     while(flag == 1)
     {
         while(codigo != 3)
         {
+            auxHead = *ptrProdutos;
             system("cls");
 
             printf("\n\n=====\t\t||\t\t MENU DE VENDAS \t\t||\t\t=====\n\n");
@@ -42,10 +45,10 @@ void menuDeVendas(cadastro_produtos *ptrProdutos,
                 compras(ptrProdutos,
                         tamanhoVetorProdts);
 
-                for(i  = 0; i < tamanhoVetorProdts; i++)
+                while(*ptrProdutos != NULL)
                 {
-                    ptrProdutos[i].subtotal = 0;
-                    ptrProdutos[i].qtdCompra = 0;
+                    (*ptrProdutos)->subtotal = 0;
+                    (*ptrProdutos)->qtdCompra = 0;
                 }
                 break;
 
@@ -53,9 +56,52 @@ void menuDeVendas(cadastro_produtos *ptrProdutos,
                 flag = 0;
 
                 system("cls");
-                relatorioDeVendasOuCarrinho(ptrProdutos,
-                                            tamanhoVetorProdts,
-                                            codigo);
+
+                cadastro_produtos *auxRelatorio = (cadastro_produtos*) calloc(1,sizeof(cadastro_produtos));
+
+                auxRelatorio = *ptrProdutos;
+
+                if(codigo == 1)
+                {
+                    system("cls");
+                    printf("\n\n=====\t\t||\t\t CARRINHO DE COMPRAS \t\t||\t\t=====\n\n");
+                    printf("\tID         \tProduto              \tEstoque       \tQuantidade vendida    \tValor vendido   \t\n");
+
+                    while(auxRelatorio != NULL)
+                    {
+                        if(auxRelatorio->id > 0 )
+                        {
+                            printf("\t%ld        \t%s                   \t%i            \t%i                    \tR$ %.2f         \t\n",
+                                   auxRelatorio->id,
+                                   auxRelatorio->nome,
+                                   auxRelatorio->estoque,
+                                   auxRelatorio->qtdCompra,
+                                   auxRelatorio->subtotal);
+                        }
+
+                        auxRelatorio = auxRelatorio->next;
+                    }
+                }
+                else
+                {
+
+                    printf("\n\n=====\t\t||\t\t RELATÓRIO DE VENDAS \t\t||\t\t=====\n\n");
+                    printf("\t ID       \t Produto           \t Estoque      \t Quantidade vendida    \t Valor vendido   \t\n\n");
+
+                    while(auxRelatorio != NULL)
+                    {
+                        if(auxRelatorio->id > 0 )
+                        {
+                            printf("\t %ld      \t %s              \t\t %i           \t %i                    \t R$ %.2f         \t\n",
+                                   auxRelatorio->id,
+                                   auxRelatorio->nome,
+                                   auxRelatorio->estoque,
+                                   auxRelatorio->qtdVendida,
+                                   auxRelatorio->valorVendido);
+                        }
+                        auxRelatorio = auxRelatorio->next;
+                    }
+                }
 
                 break;
 
@@ -224,7 +270,7 @@ void relatorioDeVendasOuCarrinho(cadastro_produtos *ptrProdutos,
         {
             if(ptrProdutos[i].id > 0 && ptrProdutos[i].qtdCompra > 0)
             {
-        printf("\t%ld        \t%s                   \t%i            \t%i                    \tR$ %.2f         \t\n",
+                printf("\t%ld        \t%s                   \t%i            \t%i                    \tR$ %.2f         \t\n",
                        ptrProdutos[i].id,
                        ptrProdutos[i].nome,
                        ptrProdutos[i].estoque,
@@ -242,7 +288,7 @@ void relatorioDeVendasOuCarrinho(cadastro_produtos *ptrProdutos,
         {
             if(ptrProdutos[i].id > 0)
             {
-        printf("\t %ld      \t %s              \t\t %i           \t %i                    \t R$ %.2f         \t\n",
+                printf("\t %ld      \t %s              \t\t %i           \t %i                    \t R$ %.2f         \t\n",
 
                        ptrProdutos[i].id,
                        ptrProdutos[i].nome,
@@ -379,7 +425,7 @@ void formaDePagamento(float subtotalFinal )
 }
 
 void salvarVenda(cadastro_produtos *ptrProdutos,
-              int tamanhoVetorProdts)
+                 int tamanhoVetorProdts)
 {
     int i = 0;
     char nomeArquivo[40];
