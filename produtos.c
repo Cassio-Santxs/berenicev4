@@ -48,10 +48,6 @@ void menuDeProdutos( cadastro_produtos **ptrProdutos,
 
                 if(*contadorProdutos > 0)
                 {
-                    char voltar;
-
-                    printf("%ld", (*ptrProdutos)->id);
-
                     printf("\n\n=====\t\t||\t\t PRODUTOS \t\t||\t\t=====\n\n");
                     printf("\n\t ID      \t Produto \t Preço        \t Estoque \t\n");
 
